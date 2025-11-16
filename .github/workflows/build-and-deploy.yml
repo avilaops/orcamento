@@ -23,14 +23,14 @@ jobs:
                   dotnet-version: "9.0.x"
 
             - name: Restore NuGet packages
-              run: dotnet restore Roncav_Budget/Roncav_Budget.sln
+              run: dotnet restore Roncav_Budget.sln
 
             - name: Build solution
-              run: dotnet build Roncav_Budget/Roncav_Budget.sln -c Release /nologo
+              run: dotnet build Roncav_Budget.sln -c Release /nologo
 
             - name: Publish WinUI package
               run: |
-                  dotnet publish Roncav_Budget/Roncav_Budget.winui/Roncav_Budget.winui.csproj \
+                  dotnet publish Roncav_Budget.winui/Roncav_Budget.winui.csproj \
                     -c Release -f net9.0-windows10.0.17763.0 -r win-x64 --self-contained false \
                     -o output/winui
 
