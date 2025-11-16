@@ -1,0 +1,322 @@
+{
+  "version": "1.0.0",
+  "producer": ".NET AppCAT CLI",
+  "metadata": {
+    "analysisStartTime": "2025-11-09T03:21:44.6041457Z",
+    "analysisEndTime": "2025-11-09T03:22:54.4623801Z",
+    "privacyMode": "Protected",
+    "privacyModeHelpUrl": "https://go.microsoft.com/fwlink/?linkid=2271074",
+    "targetIds": [
+      "AppService.Windows",
+      "AppService.Linux",
+      "AKS.Linux",
+      "AKS.Windows",
+      "ACA",
+      "AppServiceContainer.Linux",
+      "AppServiceContainer.Windows",
+      "AppServiceManagedInstance.Windows"
+    ],
+    "targetDisplayNames": [
+      "Azure App Service",
+      "Azure Kubernetes Service",
+      "Azure Container Apps",
+      "Azure App Service Container"
+    ],
+    "os": [
+      "windows",
+      "linux"
+    ]
+  },
+  "summary": {
+    "totalProjects": 5,
+    "totalIssues": 2,
+    "totalIncidents": 3,
+    "totalEffort": 9,
+    "charts": {
+      "severity": {
+        "mandatory": 0,
+        "optional": 1,
+        "potential": 2,
+        "information": 0
+      },
+      "category": {
+        "Local": 2,
+        "Scale": 1
+      }
+    }
+  },
+  "projects": [
+    {
+      "path": "roncav-budget\\roncav-budget.csproj",
+      "issues": 1,
+      "storyPoints": 6,
+      "properties": {
+        "appName": "roncav-budget",
+        "frameworks": [
+          "net9.0"
+        ],
+        "languages": [
+          "C#"
+        ],
+        "tools": [
+          "MSBuild"
+        ]
+      },
+      "incidents": [
+        {
+          "ruleId": "Local.0003",
+          "incidentId": "3015f52e-d777-4f2e-93f6-7e4245283260",
+          "location": "roncav-budget\\Services\\ImportacaoExtratoService.cs",
+          "locationKind": "File",
+          "snippet": "System.IO.File",
+          "line": 31,
+          "column": 12,
+          "targets": {
+            "AppService.Windows": {
+              "severity": "potential",
+              "effort": 3
+            },
+            "AppService.Linux": {
+              "severity": "potential",
+              "effort": 3
+            },
+            "AKS.Linux": {
+              "severity": "potential",
+              "effort": 3
+            },
+            "AKS.Windows": {
+              "severity": "potential",
+              "effort": 3
+            },
+            "ACA": {
+              "severity": "potential",
+              "effort": 3
+            },
+            "AppServiceContainer.Linux": {
+              "severity": "potential",
+              "effort": 3
+            },
+            "AppServiceContainer.Windows": {
+              "severity": "potential",
+              "effort": 3
+            },
+            "AppServiceManagedInstance.Windows": {
+              "severity": "potential",
+              "effort": 3
+            }
+          },
+          "labels": []
+        },
+        {
+          "ruleId": "Local.0003",
+          "incidentId": "89716cc0-31aa-45ad-ba74-ce2a9a06af2a",
+          "location": "roncav-budget\\Services\\ImportacaoExtratoService.cs",
+          "locationKind": "File",
+          "snippet": "System.IO.File",
+          "line": 37,
+          "column": 19,
+          "targets": {
+            "AppService.Windows": {
+              "severity": "potential",
+              "effort": 3
+            },
+            "AppService.Linux": {
+              "severity": "potential",
+              "effort": 3
+            },
+            "AKS.Linux": {
+              "severity": "potential",
+              "effort": 3
+            },
+            "AKS.Windows": {
+              "severity": "potential",
+              "effort": 3
+            },
+            "ACA": {
+              "severity": "potential",
+              "effort": 3
+            },
+            "AppServiceContainer.Linux": {
+              "severity": "potential",
+              "effort": 3
+            },
+            "AppServiceContainer.Windows": {
+              "severity": "potential",
+              "effort": 3
+            },
+            "AppServiceManagedInstance.Windows": {
+              "severity": "potential",
+              "effort": 3
+            }
+          },
+          "labels": []
+        }
+      ]
+    },
+    {
+      "path": "roncav-budget.Droid\\roncav-budget.Droid.csproj",
+      "issues": 0,
+      "storyPoints": 0,
+      "properties": {
+        "appName": "roncav-budget.Droid",
+        "frameworks": [
+          "net9.0-android"
+        ],
+        "languages": [
+          "C#"
+        ],
+        "tools": [
+          "MSBuild"
+        ]
+      },
+      "incidents": []
+    },
+    {
+      "path": "roncav-budget.iOS\\roncav-budget.iOS.csproj",
+      "issues": 0,
+      "storyPoints": 0,
+      "properties": {
+        "appName": "roncav-budget.iOS",
+        "frameworks": [
+          "net9.0-ios"
+        ],
+        "languages": [
+          "C#"
+        ],
+        "tools": [
+          "MSBuild"
+        ]
+      },
+      "incidents": []
+    },
+    {
+      "path": "roncav-budget.Mac\\roncav-budget.Mac.csproj",
+      "issues": 0,
+      "storyPoints": 0,
+      "properties": {
+        "appName": "roncav-budget.Mac",
+        "frameworks": [
+          "net9.0-maccatalyst"
+        ],
+        "languages": [
+          "C#"
+        ],
+        "tools": [
+          "MSBuild"
+        ]
+      },
+      "incidents": []
+    },
+    {
+      "path": "roncav-budget.WinUI\\roncav-budget.WinUI.csproj",
+      "issues": 1,
+      "storyPoints": 3,
+      "properties": {
+        "appName": "roncav-budget.WinUI",
+        "frameworks": [
+          "net9.0-windows10.0.19041.0"
+        ],
+        "languages": [
+          "C#"
+        ],
+        "tools": [
+          "MSBuild"
+        ]
+      },
+      "incidents": [
+        {
+          "ruleId": "Scale.0001",
+          "incidentId": "627cac38-f0a9-4127-9897-7857ecb0a14d",
+          "location": "roncav-budget.WinUI\\roncav-budget.WinUI.csproj",
+          "locationKind": "File",
+          "snippet": "Foram encontrados 12 arquivos que correspondem \u00E0 regra:\r\n\r\nAssets\\Images\\dotnet_bot_devices.scale-100.png\r\nAssets\\Images\\dotnet_bot_devices.scale-125.png\r\nAssets\\Images\\dotnet_bot_devices.scale-150.png\r\nAssets\\Images\\dotnet_bot_devices.scale-200.png\r\nAssets\\Images\\dotnet_bot_devices.scale-400.png\r\nAssets\\LockScreenLogo.scale-200.png\r\nAssets\\SplashScreen.scale-200.png\r\nAssets\\Square150x150Logo.scale-200.png\r\nAssets\\Square44x44Logo.scale-200.png\r\nAssets\\Square44x44Logo.targetsize-24_altform-unplated.png\r\nAssets\\StoreLogo.png\r\nAssets\\Wide310x150Logo.scale-200.png\r\n",
+          "targets": {
+            "AppService.Windows": {
+              "severity": "optional",
+              "effort": 3
+            },
+            "AppService.Linux": {
+              "severity": "optional",
+              "effort": 3
+            },
+            "AKS.Linux": {
+              "severity": "optional",
+              "effort": 3
+            },
+            "AKS.Windows": {
+              "severity": "optional",
+              "effort": 3
+            },
+            "ACA": {
+              "severity": "optional",
+              "effort": 3
+            },
+            "AppServiceContainer.Linux": {
+              "severity": "optional",
+              "effort": 3
+            },
+            "AppServiceContainer.Windows": {
+              "severity": "optional",
+              "effort": 3
+            },
+            "AppServiceManagedInstance.Windows": {
+              "severity": "optional",
+              "effort": 3
+            }
+          },
+          "labels": []
+        }
+      ]
+    }
+  ],
+  "rules": {
+    "Local.0003": {
+      "id": "Local.0003",
+      "description": "Seu aplicativo tem opera\u00E7\u00F5es de E/S locais ou\u00A0de rede.\n\nAs opera\u00E7\u00F5es de E/S fora da pasta do aplicativo podem n\u00E3o estar dispon\u00EDveis no Servi\u00E7o de Aplicativo do Azure. Revise e verifique se as APIs de E/S est\u00E3o tentando acessar caminhos que estar\u00E3o dispon\u00EDveis quando seu aplicativo estiver em execu\u00E7\u00E3o na \u00E1rea restrita do Servi\u00E7o de Aplicativo. Se voc\u00EA escolher a op\u00E7\u00E3o de hospedagem em cont\u00EAineres, seu cen\u00E1rio ainda poder\u00E1 estar quebrado ou ter problemas de escalabilidade.\n\nPoss\u00EDveis solu\u00E7\u00F5es:\n    1. Os arquivos de que o aplicativo precisa podem ser implantados com o aplicativo ou colocados\u00A0no Armazenamento do Azure. Voc\u00EA pode usar os Compartilhamentos de Arquivos do Armazenamento do Azure como um substituto para o compartilhamento de arquivos no local.\n    2. Outros servi\u00E7os dos quais o aplicativo depende talvez precisem ser migrados para o Azure. Dessa forma, voc\u00EA ter\u00E1 o benef\u00EDcio da menor lat\u00EAncia na nuvem.\n    3. Se o seu aplicativo precisar depender de servi\u00E7os executados no local, voc\u00EA poder\u00E1 conectar o Azure e as redes locais com solu\u00E7\u00F5es do ExpressRoute, Conex\u00F5es H\u00EDbridas ou VPN.",
+      "title": "Opera\u00E7\u00F5es de E/S locais ou\u00A0de rede detectadas",
+      "severity": "potential",
+      "effort": 3,
+      "links": [
+        {
+          "title": "Compartilhamento de arquivo do Azure",
+          "url": "https://go.microsoft.com/fwlink/?LinkID=2242591"
+        },
+        {
+          "title": "ExpressRoute",
+          "url": "https://go.microsoft.com/fwlink/?LinkID=2250577"
+        },
+        {
+          "title": "Conex\u00F5es H\u00EDbridas",
+          "url": "https://go.microsoft.com/fwlink/?LinkID=2242588"
+        },
+        {
+          "title": "Conectar uma\u00A0rede local",
+          "url": "https://go.microsoft.com/fwlink/?LinkID=2242591"
+        },
+        {
+          "title": "Design para\u00A0escalar horizontalmente",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2251007"
+        }
+      ],
+      "labels": []
+    },
+    "Scale.0001": {
+      "id": "Scale.0001",
+      "description": "Static content detected.\n\nYour current approach of serving static content directly might lead to increased costs, performance issues, maintenance challenges (requiring application redeployment for content changes), and security risks.\n\nConsider moving static content to Azure Blob Storage and adding Azure CDN.",
+      "title": "Static content detected",
+      "severity": "optional",
+      "effort": 3,
+      "links": [
+        {
+          "title": "Azure Blob Storage",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2250574"
+        },
+        {
+          "title": "Azure CDN",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2250392"
+        }
+      ],
+      "labels": []
+    }
+  }
+}
