@@ -258,7 +258,16 @@ public static class ValidadorDocumento
     {
         cpf = cpf.Replace(".", "").Replace("-", "").Trim();
         if (cpf.Length != 11) return cpf;
-        return $"{cpf.Substring(0,3)}.{cpf.Substring(3,3)}.{cpf.Substring(6,3)}-{cpf.Substring(9,2)}";
+        
+        // Validação defensiva de limites
+        try
+        {
+            return $"{cpf.Substring(0,3)}.{cpf.Substring(3,3)}.{cpf.Substring(6,3)}-{cpf.Substring(9,2)}";
+        }
+        catch (ArgumentOutOfRangeException)
+        {
+            return cpf; // Retorna não formatado se falhar
+        }
     }
     
     public static bool ValidarCNPJ(string cnpj)
@@ -497,7 +506,7 @@ public class DatabaseServiceTests : IDisposable
     
     [Theory]
     [InlineData("")]
-    [InlineData(null)]
+    [InlineData("   ")]
     public async Task SalvarTransacao_ComDescricaoInvalida_DeveLancarExcecao(string descricaoInvalida)
     {
         // Arrange
@@ -509,6 +518,21 @@ public class DatabaseServiceTests : IDisposable
         
         // Act & Assert
         await Assert.ThrowsAsync<ArgumentException>(() => 
+            _sut.SalvarTransacaoAsync(transacao));
+    }
+    
+    [Fact]
+    public async Task SalvarTransacao_ComDescricaoNula_DeveLancarExcecao()
+    {
+        // Arrange
+        var transacao = new Transacao
+        {
+            Descricao = null!,
+            Valor = 100.50m
+        };
+        
+        // Act & Assert
+        await Assert.ThrowsAsync<ArgumentNullException>(() => 
             _sut.SalvarTransacaoAsync(transacao));
     }
     
@@ -1021,7 +1045,7 @@ public class OfflineFirstService
             }
             catch (Exception ex)
             {
-                _logger.LogWarning(ex, "Transação salva localmente, sincronização falhhou");
+                _logger.LogWarning(ex, "Transação salva localmente, sincronização falhou");
                 // Ficará na fila de sincronização
             }
         }
