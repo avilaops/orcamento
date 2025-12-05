@@ -433,13 +433,18 @@ public class ImportacaoExtratoService : IImportacaoExtratoService
             var campos = line.Split(',');
             if (campos.Length >= 4)
             {
-                transacoes.Add(new Transacao
+                // ✅ CORRETO: Usar TryParse para evitar exceções
+                if (DateTime.TryParse(campos[0], out var data) &&
+                    decimal.TryParse(campos[3], NumberStyles.Currency, new CultureInfo("pt-BR"), out var valor))
                 {
-                    Data = DateTime.Parse(campos[0]),
-                    Categoria = campos[1],
-                    Descricao = campos[2],
-                    Valor = decimal.Parse(campos[3], new CultureInfo("pt-BR"))
-                });
+                    transacoes.Add(new Transacao
+                    {
+                        Data = data,
+                        Categoria = campos[1],
+                        Descricao = campos[2],
+                        Valor = valor
+                    });
+                }
             }
         }
         
@@ -606,14 +611,18 @@ public class SecureStorageService
     // ✅ CORRETO: Salvar hash, nunca plaintext
     public async Task SetPinAsync(string pin)
     {
+        // ✅ CORRETO: Usar hash seguro com salt (produção deve usar bcrypt/Argon2)
         var hash = HashPassword(pin);
         await SecureStorage.SetAsync(UserPinKey, hash);
     }
     
+    // Nota: Em produção, use bcrypt, scrypt ou Argon2 com salt
+    // Install-Package BCrypt.Net-Next
+    // var hash = BCrypt.Net.BCrypt.HashPassword(pin);
     private string HashPassword(string password)
     {
         using var sha256 = SHA256.Create();
-        var bytes = Encoding.UTF8.GetBytes(password);
+        var bytes = Encoding.UTF8.GetBytes(password + "SALT_FIXO"); // Em prod, use salt único por usuário
         var hash = sha256.ComputeHash(bytes);
         return Convert.ToBase64String(hash);
     }
@@ -982,7 +991,14 @@ public class OfflineFirstService
         // Tenta sincronizar em background se online
         if (_connectivity.NetworkAccess == NetworkAccess.Internet)
         {
-            _ = Task.Run(async () => await SyncInBackgroundAsync());
+            // ✅ CORRETO: Fire-and-forget com exception handling
+            _ = SyncInBackgroundAsync().ContinueWith(t =>
+            {
+                if (t.IsFaulted)
+                {
+                    _logger.LogError(t.Exception, "Erro ao sincronizar em background");
+                }
+            }, TaskScheduler.Default);
         }
         
         return localData;
@@ -1003,8 +1019,9 @@ public class OfflineFirstService
                 transacao.IsSynced = true;
                 await _localDb.UpdateTransacaoAsync(transacao);
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.LogWarning(ex, "Transação salva localmente, sincronização falhhou");
                 // Ficará na fila de sincronização
             }
         }
@@ -1054,13 +1071,14 @@ public class ConflictResolver
 ### Design Patterns Brasileiros
 
 ```csharp
-// ✅ CORRETO: Formato de telefone brasileiro
+// ✅ CORRETO: Formato de telefone brasileiro com validação
 public class TelefoneFormatter
 {
     public static string Format(string telefone)
     {
         telefone = Regex.Replace(telefone, @"\D", "");
         
+        // Validar tamanho antes de usar Substring
         if (telefone.Length == 11)
         {
             return $"({telefone.Substring(0, 2)}) {telefone.Substring(2, 5)}-{telefone.Substring(7, 4)}";
@@ -1072,6 +1090,7 @@ public class TelefoneFormatter
             // (11) 3456-7890
         }
         
+        // Retorna sem formatação se tamanho inválido
         return telefone;
     }
 }
@@ -1384,12 +1403,19 @@ dotnet build
 #### 5. Erro de permissão SQLite no Android
 
 ```csharp
-// Adicionar permissão no AndroidManifest.xml:
-<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+// Nota: A partir do Android API 30+, permissões de storage legadas foram descontinuadas
+// Use scoped storage ou armazene arquivos em diretórios específicos do app
 
-// No código:
-await Permissions.RequestAsync<Permissions.StorageWrite>();
+// ✅ CORRETO: Usar diretórios específicos do app (não requer permissão)
+var dbPath = Path.Combine(FileSystem.AppDataDirectory, "roncav_budget.db3");
+
+// Para Android 11+ (API 30+), se precisar acessar storage compartilhado:
+// Use MediaStore API ou Storage Access Framework (SAF)
+// Evite MANAGE_EXTERNAL_STORAGE a menos que absolutamente necessário
+
+// AndroidManifest.xml - Apenas se necessário para Android < 10
+// <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" 
+//                  android:maxSdkVersion="28" />
 ```
 
 #### 6. Hot Reload não funcionando
