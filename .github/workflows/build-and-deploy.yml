@@ -105,11 +105,14 @@ jobs:
 
             - name: Create documentation site
               run: |
+                  shopt -s nullglob
                   mkdir -p _site
                   
                   # Copy markdown files if they exist
-                  if [ -d "docs" ] && [ -n "$(ls -A docs/*.md 2>/dev/null)" ]; then
-                      cp docs/*.md _site/ 2>/dev/null || true
+                  if [ -d "docs" ]; then
+                      for file in docs/*.md; do
+                          [ -f "$file" ] && cp "$file" _site/
+                      done
                   fi
                   
                   # Create index.html
@@ -301,9 +304,7 @@ jobs:
                       
                       Acesse a documentação completa em: https://avilaops.github.io/roncav-budget
                       
-                      ---
-                      
-                      **Data de lançamento:** ${{ github.event.head_commit.timestamp }}
+                      Documentação: https://avilaops.github.io/roncav-budget
                   draft: false
                   prerelease: false
               env:
