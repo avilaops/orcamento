@@ -1227,52 +1227,178 @@ public partial class BaseViewModel : ObservableObject
 
 ## 🔧 CI/CD e Automação
 
-### GitHub Actions Workflow
+### GitHub Actions - Workflow Completo
+
+O projeto utiliza GitHub Actions para automação de build, testes e deployment. O workflow principal está em `.github/workflows/build-and-deploy.yml`.
+
+#### Funcionalidades do Workflow
+
+**1. Build Multi-Plataforma**
+- ✅ Windows (WinUI 3) - Build e publicação de executável
+- ✅ Android - Geração de APK para instalação direta
+- ✅ Artifacts disponíveis para download por 30 dias
+
+**2. Deploy Automático de Documentação**
+- ✅ GitHub Pages com documentação do projeto
+- ✅ Página HTML gerada automaticamente dos arquivos Markdown
+- ✅ Disponível em: `https://avilaops.github.io/roncav-budget`
+
+**3. Releases Automáticos**
+- ✅ Criação de release no GitHub quando uma tag `v*` é publicada
+- ✅ Upload automático de binários (Windows ZIP, Android APK)
+- ✅ Release notes gerados automaticamente
+
+#### Como Criar uma Release
+
+```bash
+# 1. Atualizar versão no código
+# Editar Roncav_Budget*/Roncav_Budget*.csproj
+# <ApplicationDisplayVersion>1.0.0</ApplicationDisplayVersion>
+
+# 2. Commitar mudanças
+git add .
+git commit -m "chore: bump version to 1.0.0"
+
+# 3. Criar e push tag
+git tag -a v1.0.0 -m "Release v1.0.0"
+git push origin main --tags
+
+# 4. GitHub Actions criará a release automaticamente
+```
+
+#### Workflow YAML Completo
 
 ```yaml
-# .github/workflows/build-and-test.yml
-name: Build and Test
+# .github/workflows/build-and-deploy.yml
+name: Build, Test and Deploy Roncav Budget
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, master]
+    tags:
+      - 'v*'
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, master]
+  workflow_dispatch:
 
 jobs:
-  build:
+  build-windows:
     runs-on: windows-latest
-    
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: '9.0.x'
-    
-    - name: Install MAUI Workloads
-      run: dotnet workload install maui
-    
-    - name: Restore dependencies
-      run: dotnet restore Roncav_Budget.sln
-    
-    - name: Build
-      run: dotnet build Roncav_Budget.sln --configuration Release --no-restore
-    
-    - name: Run tests
-      run: dotnet test Roncav_Budget.sln --configuration Release --no-build --verbosity normal
-    
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: build-artifacts
-        path: |
-          **/bin/Release/**/*.dll
-          **/bin/Release/**/*.exe
+      - uses: actions/checkout@v4
+      
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+      
+      - name: Install MAUI Workloads
+        run: dotnet workload install maui-windows
+      
+      - name: Restore dependencies
+        run: dotnet restore Roncav_Budget.winui/Roncav_Budget.winui.csproj
+      
+      - name: Build
+        run: dotnet build Roncav_Budget.winui/Roncav_Budget.winui.csproj -c Release -p:Platform=x64
+      
+      - name: Publish
+        run: dotnet publish Roncav_Budget.winui/Roncav_Budget.winui.csproj -c Release -p:Platform=x64 -o output/winui
+      
+      - name: Create artifact
+        run: Compress-Archive -Path output/winui/* -DestinationPath RoncavBudget-Windows-x64.zip
+      
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: RoncavBudget-Windows-x64
+          path: RoncavBudget-Windows-x64.zip
+
+  build-android:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+      
+      - name: Install MAUI Workloads
+        run: dotnet workload install maui-android
+      
+      - name: Build Android APK
+        run: dotnet publish Roncav_Budget.droid/Roncav_Budget.droid.csproj -c Release -f net9.0-android -p:AndroidPackageFormat=apk
+
+  deploy-docs:
+    runs-on: ubuntu-22.04
+    if: github.ref == 'refs/heads/main'
+    permissions:
+      contents: write
+      pages: write
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+      
+      - name: Create documentation site
+        run: |
+          mkdir -p _site
+          cp docs/*.md _site/
+          # Gera index.html com links para documentação
+      
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
+
+  release:
+    runs-on: ubuntu-22.04
+    needs: [build-windows, build-android]
+    if: startsWith(github.ref, 'refs/tags/v')
+    permissions:
+      contents: write
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+      
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            RoncavBudget-Windows-x64.zip
+            RoncavBudget-Android.apk
+          body: |
+            ## Roncav Budget ${{ github.ref_name }}
+            
+            Download do aplicativo para Windows e Android.
+            
+            Documentação: https://avilaops.github.io/roncav-budget
 ```
 
-### Build Script
+#### Comandos Úteis para CI/CD
+
+```bash
+# Testar workflow localmente com act
+act -j build-windows
+
+# Ver logs de workflow
+gh run list
+gh run view <run-id>
+
+# Baixar artifacts
+gh run download <run-id>
+
+# Criar release manualmente
+gh release create v1.0.0 \
+  RoncavBudget-Windows-x64.zip \
+  RoncavBudget-Android.apk \
+  --title "Release v1.0.0" \
+  --notes "Release notes aqui"
+```
+
+### Build Script Local
+
+Para automatizar builds locais, use o script PowerShell:
+
 ```powershell
 # build.ps1
 param(
