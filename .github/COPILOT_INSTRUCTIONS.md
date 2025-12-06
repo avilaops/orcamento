@@ -1305,13 +1305,15 @@ jobs:
         run: dotnet publish Roncav_Budget.winui/Roncav_Budget.winui.csproj -c Release -p:Platform=x64 -o output/winui
       
       - name: Create artifact
-        run: Compress-Archive -Path output/winui/* -DestinationPath RoncavBudget-Windows-x64.zip
+        run: |
+            if (!(Test-Path artifacts)) { New-Item -Path artifacts -ItemType Directory | Out-Null }
+            Compress-Archive -Path output/winui/* -DestinationPath artifacts/RoncavBudget-Windows-x64.zip
       
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: RoncavBudget-Windows-x64
-          path: RoncavBudget-Windows-x64.zip
+          path: artifacts/RoncavBudget-Windows-x64.zip
 
   build-android:
     runs-on: windows-latest
@@ -1327,7 +1329,21 @@ jobs:
         run: dotnet workload install maui-android
       
       - name: Build Android APK
-        run: dotnet publish Roncav_Budget.droid/Roncav_Budget.droid.csproj -c Release -f net9.0-android -p:AndroidPackageFormat=apk
+        run: dotnet publish Roncav_Budget.droid/Roncav_Budget.droid.csproj -c Release -f net9.0-android -p:AndroidPackageFormat=apk -o output/android
+      
+      - name: Find and copy APK
+        run: |
+            if (!(Test-Path artifacts)) { New-Item -Path artifacts -ItemType Directory | Out-Null }
+            $apkFiles = Get-ChildItem -Path output/android -Filter *.apk -Recurse
+            if ($apkFiles.Count -gt 0) {
+                Copy-Item $apkFiles[0].FullName artifacts/RoncavBudget-Android.apk
+            }
+      
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: RoncavBudget-Android-APK
+          path: artifacts/RoncavBudget-Android.apk
 
   deploy-docs:
     runs-on: ubuntu-22.04
