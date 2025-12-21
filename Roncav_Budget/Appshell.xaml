@@ -85,7 +85,7 @@
     <FlyoutItem Title="Contas">
         <ShellContent
             Title="Contas"
-            ContentTemplate="{DataTemplate ContentPage}"
+            ContentTemplate="{DataTemplate roncavviews:ContasPage}"
             Route="Contas">
             <ShellContent.Icon>
                 <FontImageSource Glyph="&#xE8C7;"
@@ -98,7 +98,7 @@
     <FlyoutItem Title="Orçamentos">
         <ShellContent
             Title="Orçamentos"
-            ContentTemplate="{DataTemplate ContentPage}"
+            ContentTemplate="{DataTemplate roncavviews:OrcamentosPage}"
             Route="Orcamentos">
             <ShellContent.Icon>
                 <FontImageSource Glyph="&#xE8F1;"
@@ -111,7 +111,7 @@
     <FlyoutItem Title="Metas">
         <ShellContent
             Title="Metas"
-            ContentTemplate="{DataTemplate ContentPage}"
+            ContentTemplate="{DataTemplate roncavviews:MetasPage}"
             Route="Metas">
             <ShellContent.Icon>
                 <FontImageSource Glyph="&#xE8F4;"
@@ -124,7 +124,7 @@
     <FlyoutItem Title="Relatórios">
         <ShellContent
             Title="Relatórios"
-            ContentTemplate="{DataTemplate ContentPage}"
+            ContentTemplate="{DataTemplate roncavviews:RelatoriosPage}"
             Route="Relatorios">
             <ShellContent.Icon>
                 <FontImageSource Glyph="&#xE9D9;"
