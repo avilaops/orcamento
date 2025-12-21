@@ -18,13 +18,13 @@ public partial class ContasViewModel : ObservableObject
 
     public ObservableCollection<Conta> Contas { get; } = new();
 
-  public ContasViewModel(DatabaseService databaseService)
+    public ContasViewModel(DatabaseService databaseService)
     {
         _databaseService = databaseService;
     }
 
     [RelayCommand]
-  private async Task CarregarContasAsync()
+    public async Task CarregarContasAsync()
     {
         IsLoading = true;
 

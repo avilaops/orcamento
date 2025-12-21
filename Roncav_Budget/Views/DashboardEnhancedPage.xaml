@@ -187,8 +187,7 @@
                         <lvc:PieChart Series="{Binding GastosPorCategoriaSeries}"
                                      HeightRequest="280"
                                      InitialRotation="-90"
-                                     AnimationsSpeed="00:00:00.8"
-                                     HoverPushout="15"/>
+                                     AnimationsSpeed="00:00:00.8"/>
                         
                         <!-- Legenda Melhorada -->
                         <BoxView HeightRequest="1" 

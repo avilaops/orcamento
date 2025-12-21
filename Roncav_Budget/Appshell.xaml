@@ -12,26 +12,8 @@
     <!-- ⌨️ Atalhos de Teclado Globais -->
     <Shell.Resources>
         <ResourceDictionary>
-            <!-- KeyboardAccelerators para Windows/macOS -->
-            <x:Array x:Key="GlobalKeyboardAccelerators" Type="{x:Type KeyboardAccelerator}">
-                <!-- CTRL+SHIFT+W - Ajuda Rápida -->
-                <KeyboardAccelerator
-                    Key="W"
-                    Modifiers="Ctrl,Shift"
-                    Invoked="OnHelpAcceleratorInvoked"/>
-                
-                <!-- CTRL+K - Adicionar Categoria/Pasta -->
-                <KeyboardAccelerator
-                    Key="K"
-                    Modifiers="Ctrl"
-                    Invoked="OnAddFolderAcceleratorInvoked"/>
-                
-                <!-- CTRL+O - Abrir Pasta -->
-                <KeyboardAccelerator
-                    Key="O"
-                    Modifiers="Ctrl"
-                    Invoked="OnOpenFolderAcceleratorInvoked"/>
-            </x:Array>
+            <!-- KeyboardAccelerators removidos - não funcionam no Shell do .NET MAUI -->
+            <!-- Use atalhos nativos da plataforma ou implemente via código -->
         </ResourceDictionary>
     </Shell.Resources>
 

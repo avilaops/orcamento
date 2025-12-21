@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:Roncav_Budget.ViewModels"
              x:Class="Roncav_Budget.Views.RelatoriosPage"
-             x:DataType="vm:RelatoriosViewModel"
              Title="Relatórios"
              BackgroundColor="#F5F5F7">
 
