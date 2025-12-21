@@ -5,7 +5,7 @@ namespace roncav_budget.Services;
 
 /// <summary>
 /// Serviço de sincronização entre dados locais (SQLite) e nuvem (api.avila.inc)
-/// Implementa estratégia offline-first com sync bidirecional
+/// Implementa estratégia offline-first com sync bidirecional e retry automático
 /// </summary>
 public class SyncService
 {
@@ -13,9 +13,19 @@ public class SyncService
     private readonly DatabaseService _databaseService;
     private readonly IPreferences _preferences;
     private readonly IConnectivity _connectivity;
+    private readonly ErrorHandlingService _errorHandler;
 
     private bool _isSyncing = false;
     private DateTime? _lastSyncAt;
+    
+    // 🔄 Configurações de retry
+    private const int MaxRetryAttempts = 3;
+    private static readonly TimeSpan[] RetryDelays = new[]
+    {
+        TimeSpan.FromSeconds(2),
+        TimeSpan.FromSeconds(5),
+        TimeSpan.FromSeconds(10)
+    };
 
     public event EventHandler<SyncEventArgs>? SyncStarted;
     public event EventHandler<SyncEventArgs>? SyncCompleted;
@@ -25,12 +35,14 @@ public class SyncService
         AvilaApiService apiService,
         DatabaseService databaseService,
         IPreferences preferences,
-        IConnectivity connectivity)
+        IConnectivity connectivity,
+        ErrorHandlingService errorHandler)
     {
         _apiService = apiService;
         _databaseService = databaseService;
         _preferences = preferences;
         _connectivity = connectivity;
+        _errorHandler = errorHandler;
 
         // Carregar última sincronização
         var lastSyncStr = _preferences.Get("last_sync_at", string.Empty);
@@ -44,7 +56,7 @@ public class SyncService
     }
 
     /// <summary>
-    /// Sincroniza dados bidirecionalmente
+    /// Sincroniza dados bidirecionalmente com retry automático
     /// </summary>
     public async Task<SyncResult> SyncAsync(bool force = false)
     {
@@ -60,47 +72,97 @@ public class SyncService
         if (!force && _lastSyncAt.HasValue && DateTime.UtcNow - _lastSyncAt.Value < TimeSpan.FromMinutes(5))
             return SyncResult.Success(new SyncResponse { Success = true, ItemsSynced = 0, SyncedAt = _lastSyncAt.Value });
 
-        try
+        return await ExecuteWithRetryAsync(async () =>
         {
-            _isSyncing = true;
-            SyncStarted?.Invoke(this, new SyncEventArgs { StartedAt = DateTime.UtcNow });
-
-            // 1. Upload dados locais modificados
-            var uploadResult = await UploadLocalChangesAsync();
-            if (!uploadResult.IsSuccess)
-                return uploadResult;
-
-            // 2. Download dados do servidor
-            var downloadResult = await DownloadServerDataAsync();
-            if (!downloadResult.IsSuccess)
-                return SyncResult.Failed(downloadResult.ErrorMessage ?? "Erro ao baixar dados");
-
-            // 3. Resolver conflitos (se houver)
-            if (uploadResult.Data?.Conflicts?.Any() == true)
+            try
             {
-                await ResolveConflictsAsync(uploadResult.Data.Conflicts);
+                _isSyncing = true;
+                SyncStarted?.Invoke(this, new SyncEventArgs { StartedAt = DateTime.UtcNow });
+
+                // 1. Upload dados locais modificados
+                var uploadResult = await UploadLocalChangesAsync();
+                if (!uploadResult.IsSuccess)
+                    return uploadResult;
+
+                // 2. Download dados do servidor
+                var downloadResult = await DownloadServerDataAsync();
+                if (!downloadResult.IsSuccess)
+                    return SyncResult.Failed(downloadResult.ErrorMessage ?? "Erro ao baixar dados");
+
+                // 3. Resolver conflitos (se houver)
+                if (uploadResult.Data?.Conflicts?.Any() == true)
+                {
+                    await ResolveConflictsAsync(uploadResult.Data.Conflicts);
+                }
+
+                // Atualizar última sincronização
+                _lastSyncAt = DateTime.UtcNow;
+                _preferences.Set("last_sync_at", _lastSyncAt.Value.ToString("O"));
+
+                var result = SyncResult.Success(uploadResult.Data!);
+                SyncCompleted?.Invoke(this, new SyncEventArgs 
+                { 
+                    CompletedAt = DateTime.UtcNow, 
+                    ItemsSynced = uploadResult.Data!.ItemsSynced 
+                });
+
+                return result;
             }
+            catch (Exception ex)
+            {
+                await _apiService.LogErrorAsync("Sync", ex);
+                var result = SyncResult.Failed($"Erro na sincronização: {ex.Message}");
+                SyncFailed?.Invoke(this, new SyncEventArgs { Error = ex.Message });
+                throw; // Re-throw para o retry handler
+            }
+            finally
+            {
+                _isSyncing = false;
+            }
+        });
+    }
 
-            // Atualizar última sincronização
-            _lastSyncAt = DateTime.UtcNow;
-            _preferences.Set("last_sync_at", _lastSyncAt.Value.ToString("O"));
+    /// <summary>
+    /// 🔄 Executa ação com retry exponencial automático
+    /// </summary>
+    private async Task<T> ExecuteWithRetryAsync<T>(Func<Task<T>> action)
+    {
+        Exception? lastException = null;
 
-            var result = SyncResult.Success(uploadResult.Data!);
-            SyncCompleted?.Invoke(this, new SyncEventArgs { CompletedAt = DateTime.UtcNow, ItemsSynced = uploadResult.Data!.ItemsSynced });
-
-            return result;
-        }
-        catch (Exception ex)
+        for (int attempt = 0; attempt < MaxRetryAttempts; attempt++)
         {
-            await _apiService.LogErrorAsync("Sync", ex);
-            var result = SyncResult.Failed($"Erro na sincronização: {ex.Message}");
-            SyncFailed?.Invoke(this, new SyncEventArgs { Error = ex.Message });
-            return result;
+            try
+            {
+                return await action();
+            }
+            catch (HttpRequestException ex) when (attempt < MaxRetryAttempts - 1)
+            {
+                lastException = ex;
+                System.Diagnostics.Debug.WriteLine($"🔄 Tentativa {attempt + 1}/{MaxRetryAttempts} falhou. Retentando em {RetryDelays[attempt].TotalSeconds}s...");
+                
+                await Task.Delay(RetryDelays[attempt]);
+                continue;
+            }
+            catch (TimeoutException ex) when (attempt < MaxRetryAttempts - 1)
+            {
+                lastException = ex;
+                System.Diagnostics.Debug.WriteLine($"⏱️ Timeout na tentativa {attempt + 1}/{MaxRetryAttempts}. Retentando...");
+                
+                await Task.Delay(RetryDelays[attempt]);
+                continue;
+            }
+            catch (Exception ex)
+            {
+                // Outros erros não devem fazer retry
+                await _errorHandler.HandleErrorAsync(ex, "SyncRetry");
+                throw;
+            }
         }
-        finally
-        {
-            _isSyncing = false;
-        }
+
+        // Todas as tentativas falharam
+        var finalError = lastException ?? new Exception("Sync falhou após múltiplas tentativas");
+        await _errorHandler.HandleErrorAsync(finalError, "SyncRetryExhausted");
+        throw finalError;
     }
 
     /// <summary>

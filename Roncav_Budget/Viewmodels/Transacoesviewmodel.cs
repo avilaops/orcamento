@@ -62,7 +62,7 @@ public partial class TransacoesViewModel : ObservableObject
      }
         catch (Exception ex)
 {
-      await Application.Current!.MainPage!.DisplayAlert("Erro", $"Erro ao carregar transações: {ex.Message}", "OK");
+      await Application.Current!.MainPage!.DisplayAlert("Erro", $"Erro ao carregar transaï¿½ï¿½es: {ex.Message}", "OK");
     }
  finally
         {
@@ -90,7 +90,7 @@ public partial class TransacoesViewModel : ObservableObject
     [RelayCommand]
     private async Task AdicionarTransacaoAsync()
     {
-        // Navegar para página de nova transação
+        // Navegar para pï¿½gina de nova transaï¿½ï¿½o
    // await Shell.Current.GoToAsync("NovaTransacao");
   }
 
@@ -98,7 +98,7 @@ public partial class TransacoesViewModel : ObservableObject
     private async Task EditarTransacaoAsync(Transacao transacao)
     {
         if (transacao == null) return;
-    // Navegar para página de edição
+    // Navegar para pï¿½gina de ediï¿½ï¿½o
   // await Shell.Current.GoToAsync($"EditarTransacao?id={transacao.Id}");
     }
 
@@ -108,9 +108,9 @@ private async Task ExcluirTransacaoAsync(Transacao transacao)
         if (transacao == null) return;
 
       var confirma = await Application.Current!.MainPage!.DisplayAlert(
-      "Confirmar Exclusão",
-       $"Deseja realmente excluir a transação '{transacao.Descricao}'?",
- "Sim", "Não");
+      "Confirmar Exclusï¿½o",
+       $"Deseja realmente excluir a transaï¿½ï¿½o '{transacao.Descricao}'?",
+ "Sim", "Nï¿½o");
 
    if (!confirma) return;
 
@@ -118,11 +118,11 @@ private async Task ExcluirTransacaoAsync(Transacao transacao)
      {
          await _databaseService.ExcluirTransacaoAsync(transacao);
    Transacoes.Remove(transacao);
-      await Application.Current.MainPage.DisplayAlert("Sucesso", "Transação excluída com sucesso!", "OK");
+      await Application.Current.MainPage.DisplayAlert("Sucesso", "Transaï¿½ï¿½o excluï¿½da com sucesso!", "OK");
   }
         catch (Exception ex)
         {
-            await Application.Current.MainPage.DisplayAlert("Erro", $"Erro ao excluir transação: {ex.Message}", "OK");
+            await Application.Current.MainPage.DisplayAlert("Erro", $"Erro ao excluir transaï¿½ï¿½o: {ex.Message}", "OK");
         }
     }
 

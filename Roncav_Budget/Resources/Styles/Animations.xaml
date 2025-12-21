@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!-- Animação de Fade In -->
+    <Style x:Key="FadeInAnimation" TargetType="VisualElement">
+        <Setter Property="Opacity" Value="0"/>
+    </Style>
+
+    <!-- Animação de Slide In (Bottom to Top) -->
+    <Style x:Key="SlideInBottomAnimation" TargetType="VisualElement">
+        <Setter Property="TranslationY" Value="50"/>
+        <Setter Property="Opacity" Value="0"/>
+    </Style>
+
+    <!-- Animação de Scale -->
+    <Style x:Key="ScaleAnimation" TargetType="VisualElement">
+        <Setter Property="Scale" Value="0.9"/>
+        <Setter Property="Opacity" Value="0"/>
+    </Style>
+
+    <!-- Animação de Card Hover (para Frame/Button) -->
+    <Style x:Key="CardHoverStyle" TargetType="Frame">
+        <Setter Property="BackgroundColor" Value="White"/>
+        <Setter Property="HasShadow" Value="True"/>
+        <Setter Property="CornerRadius" Value="12"/>
+        <Setter Property="Padding" Value="16"/>
+        <Style.Triggers>
+            <Trigger TargetType="Frame" Property="IsEnabled" Value="True">
+                <Setter Property="Scale" Value="1.0"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Button com animação de tap -->
+    <Style x:Key="AnimatedButton" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{StaticResource Primary}"/>
+        <Setter Property="TextColor" Value="White"/>
+        <Setter Property="CornerRadius" Value="8"/>
+        <Setter Property="HeightRequest" Value="48"/>
+        <Setter Property="FontAttributes" Value="Bold"/>
+    </Style>
+
+    <!-- Loading Spinner Style -->
+    <Style x:Key="LoadingStyle" TargetType="ActivityIndicator">
+        <Setter Property="Color" Value="{StaticResource Primary}"/>
+        <Setter Property="HeightRequest" Value="50"/>
+        <Setter Property="WidthRequest" Value="50"/>
+        <Setter Property="HorizontalOptions" Value="Center"/>
+        <Setter Property="VerticalOptions" Value="Center"/>
+    </Style>
+
+</ResourceDictionary>

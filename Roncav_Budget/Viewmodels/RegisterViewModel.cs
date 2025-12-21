@@ -102,15 +102,19 @@ public partial class RegisterViewModel : ObservableObject
             HasError = false;
             ErrorMessage = string.Empty;
 
-            var result = await _avilaApi.RegisterAsync(Email, Senha, Nome);
+            var result = await _avilaApi.RegisterAsync(Nome, Email, Senha);
 
             if (result.IsSuccess)
             {
                 // Registro bem-sucedido
-                await Application.Current!.MainPage!.DisplayAlert(
-                    "Conta criada!",
-                    "Sua conta foi criada com sucesso. Bem-vindo ao Roncav Budget!",
-                    "OK");
+                var mainPage = Application.Current?.Windows[0]?.Page;
+                if (mainPage != null)
+                {
+                    await mainPage.DisplayAlert(
+                        "Conta criada!",
+                        "Sua conta foi criada com sucesso. Bem-vindo ao Roncav Budget!",
+                        "OK");
+                }
 
                 // Navegar para a dashboard
                 await Shell.Current.GoToAsync("//dashboard");

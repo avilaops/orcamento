@@ -4,9 +4,36 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:views="clr-namespace:roncav_budget.Views"
+    xmlns:roncavviews="clr-namespace:Roncav_Budget.Views"
     Shell.FlyoutBehavior="Flyout"
     Shell.FlyoutBackgroundColor="#FFFFFF"
     Title="Roncav Budget">
+
+    <!-- ⌨️ Atalhos de Teclado Globais -->
+    <Shell.Resources>
+        <ResourceDictionary>
+            <!-- KeyboardAccelerators para Windows/macOS -->
+            <x:Array x:Key="GlobalKeyboardAccelerators" Type="{x:Type KeyboardAccelerator}">
+                <!-- CTRL+SHIFT+W - Ajuda Rápida -->
+                <KeyboardAccelerator
+                    Key="W"
+                    Modifiers="Ctrl,Shift"
+                    Invoked="OnHelpAcceleratorInvoked"/>
+                
+                <!-- CTRL+K - Adicionar Categoria/Pasta -->
+                <KeyboardAccelerator
+                    Key="K"
+                    Modifiers="Ctrl"
+                    Invoked="OnAddFolderAcceleratorInvoked"/>
+                
+                <!-- CTRL+O - Abrir Pasta -->
+                <KeyboardAccelerator
+                    Key="O"
+                    Modifiers="Ctrl"
+                    Invoked="OnOpenFolderAcceleratorInvoked"/>
+            </x:Array>
+        </ResourceDictionary>
+    </Shell.Resources>
 
     <Shell.FlyoutHeader>
         <Grid BackgroundColor="#007AFF"
@@ -22,6 +49,9 @@
                        FontSize="15"
                        TextColor="White"
                        Opacity="0.8"/>
+                
+                <!-- 🔄 Indicador de Sincronização -->
+                <roncavviews:SyncIndicatorView Margin="0,12,0,0"/>
             </VerticalStackLayout>
         </Grid>
     </Shell.FlyoutHeader>
@@ -29,7 +59,7 @@
     <FlyoutItem Title="Resumo">
         <ShellContent
             Title="Resumo"
-            ContentTemplate="{DataTemplate views:DashboardPage}"
+            ContentTemplate="{DataTemplate roncavviews:DashboardEnhancedPage}"
             Route="Dashboard">
             <ShellContent.Icon>
                 <FontImageSource Glyph="&#xE10F;"
@@ -107,7 +137,7 @@
     <FlyoutItem Title="Configurações">
         <ShellContent
             Title="Configurações"
-            ContentTemplate="{DataTemplate ContentPage}"
+            ContentTemplate="{DataTemplate roncavviews:SettingsPage}"
             Route="Configuracoes">
             <ShellContent.Icon>
                 <FontImageSource Glyph="&#xE713;"

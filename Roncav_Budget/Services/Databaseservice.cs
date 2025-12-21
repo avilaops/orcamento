@@ -4,7 +4,7 @@ using roncav_budget.Models;
 namespace roncav_budget.Services;
 
 /// <summary>
-/// Serviço de acesso aos dados usando SQLite
+/// Serviï¿½o de acesso aos dados usando SQLite
 /// </summary>
 public class DatabaseService
 {
@@ -30,7 +30,7 @@ public class DatabaseService
   await _database.CreateTableAsync<Orcamento>();
         await _database.CreateTableAsync<Meta>();
 
-        // Inserir categorias padrão se não existirem
+        // Inserir categorias padrï¿½o se nï¿½o existirem
       var categoriasExistentes = await _database.Table<Categoria>().CountAsync();
         if (categoriasExistentes == 0)
         {
@@ -136,7 +136,7 @@ return contas.Sum(c => c.SaldoAtual);
 
     #endregion
 
-  #region Transações
+  #region Transaï¿½ï¿½es
 
     public async Task<List<Transacao>> ObterTransacoesAsync(DateTime? dataInicio = null, DateTime? dataFim = null)
     {
@@ -216,7 +216,7 @@ query = query.Where(t => t.Data <= dataFim.Value);
         // Atualizar saldo da conta
 await AtualizarSaldoContaAsync(transacao.ContaId);
 
-        if (transacao.Tipo == "Transferência" && transacao.ContaDestinoId.HasValue)
+        if (transacao.Tipo == "Transferï¿½ncia" && transacao.ContaDestinoId.HasValue)
         {
             await AtualizarSaldoContaAsync(transacao.ContaDestinoId.Value);
         }
@@ -232,7 +232,7 @@ await AtualizarSaldoContaAsync(transacao.ContaId);
       // Atualizar saldo da conta
 await AtualizarSaldoContaAsync(transacao.ContaId);
         
-        if (transacao.Tipo == "Transferência" && transacao.ContaDestinoId.HasValue)
+        if (transacao.Tipo == "Transferï¿½ncia" && transacao.ContaDestinoId.HasValue)
         {
  await AtualizarSaldoContaAsync(transacao.ContaDestinoId.Value);
         }
@@ -257,7 +257,7 @@ await AtualizarSaldoContaAsync(transacao.ContaId);
           saldo += transacao.Valor;
             else if (transacao.Tipo == "Despesa")
      saldo -= transacao.Valor;
-            else if (transacao.Tipo == "Transferência")
+            else if (transacao.Tipo == "Transferï¿½ncia")
             {
 if (transacao.ContaId == contaId)
      saldo -= transacao.Valor;
@@ -305,7 +305,7 @@ if (transacao.ContaId == contaId)
 
     #endregion
 
-    #region Orçamentos
+    #region Orï¿½amentos
 
     public async Task<List<Orcamento>> ObterOrcamentosMesAsync(int mes, int ano)
     {

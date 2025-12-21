@@ -22,11 +22,15 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="ClosedXML" Version="0.104.1" />
         <PackageReference Include="CommunityToolkit.Maui" Version="11.2.0" />
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
+        <PackageReference Include="LiveChartsCore.SkiaSharpView.Maui" Version="2.0.0-rc4.3" />
         <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.8" />
         <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.0" />
+        <PackageReference Include="Plugin.LocalNotification" Version="11.1.5" />
+        <PackageReference Include="QuestPDF" Version="2024.12.3" />
         <PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
     </ItemGroup>
 

@@ -6,6 +6,7 @@
         <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
         <RootNamespace>roncav_budget.WinUI</RootNamespace>
         <ApplicationManifest>app.manifest</ApplicationManifest>
+        <ApplicationIcon>Assets\app_icon.ico</ApplicationIcon>
         <Platforms>x86;x64;ARM64</Platforms>
         <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
         <PublishProfile>win10-$(Platform).pubxml</PublishProfile>
@@ -34,6 +35,7 @@
         <!-- Make sure all image assets to be in the root of the package to match the other
         platforms -->
         <Content Update="Assets\Images\*" TargetPath="%(Filename)%(Extension)" />
+        <Content Include="Assets\app_icon.ico" />
     </ItemGroup>
 
     <ItemGroup>

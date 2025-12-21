@@ -106,10 +106,14 @@ public partial class LoginViewModel : ObservableObject
     private async Task ForgotPassword()
     {
         // TODO: Implementar recuperação de senha
-        await Application.Current!.MainPage!.DisplayAlert(
-            "Recuperar senha",
-            "Um link de recuperação será enviado para seu e-mail em breve.",
-            "OK");
+        var mainPage = Application.Current?.Windows[0]?.Page;
+        if (mainPage != null)
+        {
+            await mainPage.DisplayAlert(
+                "Recuperar senha",
+                "Um link de recuperação será enviado para seu e-mail em breve.",
+                "OK");
+        }
     }
 
     [RelayCommand]
