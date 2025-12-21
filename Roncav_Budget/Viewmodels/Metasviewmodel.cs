@@ -23,7 +23,7 @@ private bool _isLoading;
     }
 
     [RelayCommand]
-    private async Task CarregarMetasAsync()
+    public async Task CarregarMetasAsync()
     {
    IsLoading = true;
 
@@ -114,11 +114,11 @@ else
       Metas.Remove(meta);
        MetasAtivas.Remove(meta);
         MetasConcluidas.Remove(meta);
-            await Application.Current.MainPage.DisplayAlert("Sucesso", "Meta exclu�da com sucesso!", "OK");
+            await Application.Current!.MainPage!.DisplayAlert("Sucesso", "Meta exclu�da com sucesso!", "OK");
         }
         catch (Exception ex)
 {
-            await Application.Current.MainPage.DisplayAlert("Erro", $"Erro ao excluir meta: {ex.Message}", "OK");
+            await Application.Current!.MainPage!.DisplayAlert("Erro", $"Erro ao excluir meta: {ex.Message}", "OK");
         }
     }
 }

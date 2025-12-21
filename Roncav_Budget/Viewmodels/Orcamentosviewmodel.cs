@@ -41,31 +41,31 @@ public partial class OrcamentosViewModel : ObservableObject
     }
 
     [RelayCommand]
-private async Task CarregarOrcamentosAsync()
-{
+    public async Task CarregarOrcamentosAsync()
+    {
         IsLoading = true;
 
-  try
- {
-       Orcamentos.Clear();
-  await _databaseService.AtualizarGastosOrcamentosAsync(MesAtual, AnoAtual);
- var orcamentos = await _databaseService.ObterOrcamentosMesAsync(MesAtual, AnoAtual);
+        try
+        {
+            Orcamentos.Clear();
+            await _databaseService.AtualizarGastosOrcamentosAsync(MesAtual, AnoAtual);
+            var orcamentos = await _databaseService.ObterOrcamentosMesAsync(MesAtual, AnoAtual);
 
-       foreach (var orcamento in orcamentos)
-{
-  Orcamentos.Add(orcamento);
-      }
+            foreach (var orcamento in orcamentos)
+            {
+                Orcamentos.Add(orcamento);
+            }
 
-       TotalPlanejado = Orcamentos.Sum(o => o.ValorPlanejado);
-  TotalGasto = Orcamentos.Sum(o => o.ValorGasto);
+            TotalPlanejado = Orcamentos.Sum(o => o.ValorPlanejado);
+            TotalGasto = Orcamentos.Sum(o => o.ValorGasto);
         }
         catch (Exception ex)
-  {
-   await Application.Current!.MainPage!.DisplayAlert("Erro", $"Erro ao carregar or�amentos: {ex.Message}", "OK");
-    }
+        {
+            await Application.Current!.MainPage!.DisplayAlert("Erro", $"Erro ao carregar orçamentos: {ex.Message}", "OK");
+        }
         finally
-     {
-  IsLoading = false;
+        {
+            IsLoading = false;
         }
     }
 
