@@ -69,6 +69,8 @@ namespace roncav_budget
             builder.Services.AddTransient<LoginViewModel>();
             builder.Services.AddTransient<RegisterViewModel>();
             builder.Services.AddTransient<SettingsViewModel>();
+            builder.Services.AddTransient<NovaContaViewModel>();
+            builder.Services.AddTransient<RelatoriosViewModel>();
 
             // Registrar Pages
             builder.Services.AddTransient<DashboardPage>();
@@ -77,6 +79,11 @@ namespace roncav_budget
             builder.Services.AddTransient<LoginPage>();
             builder.Services.AddTransient<RegisterPage>();
             builder.Services.AddTransient<SettingsPage>();
+            builder.Services.AddTransient<ContasPage>();
+            builder.Services.AddTransient<NovaContaPage>();
+            builder.Services.AddTransient<OrcamentosPage>();
+            builder.Services.AddTransient<MetasPage>();
+            builder.Services.AddTransient<RelatoriosPage>();
 
 #if DEBUG
             builder.Logging.AddDebug();

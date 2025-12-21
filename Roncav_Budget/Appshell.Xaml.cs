@@ -30,9 +30,13 @@ namespace roncav_budget
             Routing.RegisterRoute("login", typeof(LoginPage));
             Routing.RegisterRoute("register", typeof(RegisterPage));
             Routing.RegisterRoute("dashboard", typeof(DashboardPage));
-            Routing.RegisterRoute("transacoes/nova", typeof(NovaTransacaoPage));
             Routing.RegisterRoute("contas/nova", typeof(NovaContaPage));
-            Routing.RegisterRoute("metas/nova", typeof(NovaMetaPage));
+            Routing.RegisterRoute("contas/editar", typeof(NovaContaPage));
+            Routing.RegisterRoute("transacoes/nova", typeof(TransacoesPage));
+            Routing.RegisterRoute("orcamentos/novo", typeof(OrcamentosPage));
+            Routing.RegisterRoute("orcamentos/editar", typeof(OrcamentosPage));
+            Routing.RegisterRoute("metas/nova", typeof(MetasPage));
+            Routing.RegisterRoute("metas/editar", typeof(MetasPage));
         }
 
         private void ConfigurarTema()
