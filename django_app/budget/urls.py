@@ -48,6 +48,13 @@ urlpatterns = [
 
     # Planos e Upgrade
     path('pricing/', views.pricing, name='pricing'),
+
+    # Stripe Checkout
+    path('checkout/<str:plan>/', views.stripe_views.checkout_session, name='checkout_session'),
+    path('checkout/success/', views.stripe_views.checkout_success, name='checkout_success'),
+    path('checkout/cancel/', views.stripe_views.checkout_cancel, name='checkout_cancel'),
+    path('customer-portal/', views.stripe_views.customer_portal, name='customer_portal'),
+    path('stripe/webhook/', views.stripe_views.stripe_webhook, name='stripe_webhook'),
     path('upgrade/<str:plano_id>/', views.upgrade_plano, name='upgrade_plano'),
 
     # Páginas Legais

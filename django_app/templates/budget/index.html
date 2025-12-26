@@ -3,210 +3,210 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Budget - Controle Financeiro Pessoal</title>
+    <title>Budget Avila - Controle Financeiro Inteligente</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
         }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .navbar {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 1rem 2rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .navbar-brand {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #667eea;
-            text-decoration: none;
-        }
-
-        .hero {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 4rem 2rem;
-            color: white;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-
-        .hero p {
-            font-size: 1.5rem;
-            margin-bottom: 3rem;
-            opacity: 0.95;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .btn {
-            padding: 1rem 2.5rem;
-            font-size: 1.2rem;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            text-decoration: none;
-            transition: all 0.3s;
-            font-weight: 600;
-            display: inline-block;
-        }
-
-        .btn-primary {
-            background: white;
-            color: #667eea;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-        }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: 2px solid white;
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-3px);
-        }
-
-        .features {
-            background: white;
-            padding: 4rem 2rem;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        .feature {
-            text-align: center;
-            padding: 2rem;
-        }
-
-        .feature-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .feature h3 {
-            color: #667eea;
-            margin-bottom: 0.5rem;
-            font-size: 1.3rem;
-        }
-
-        .feature p {
-            color: #666;
-            line-height: 1.6;
-        }
-
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .hero p {
-                font-size: 1.2rem;
-            }
-
-            .hero-buttons {
-                flex-direction: column;
-            }
-
-            .btn {
-                width: 100%;
-            }
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
         }
     </style>
 </head>
-<body>
-    <nav class="navbar">
-        <a href="/" class="navbar-brand">💰 Budget</a>
-        <a href="{% url 'login' %}" class="btn btn-primary" style="padding: 0.5rem 1.5rem; font-size: 1rem;">Entrar</a>
+<body class="bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+    
+    <!-- Navbar -->
+    <nav class="bg-white/80 backdrop-blur-md fixed w-full top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-2">
+                    <span class="text-3xl">💰</span>
+                    <span class="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                        Budget Avila
+                    </span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="{% url 'pricing' %}" class="text-gray-700 hover:text-blue-600 font-medium transition">Planos</a>
+                    <a href="{% url 'login' %}" class="text-gray-700 hover:text-blue-600 font-medium transition">Entrar</a>
+                    <a href="{% url 'registro' %}" class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-lg font-semibold hover:shadow-lg transition transform hover:-translate-y-0.5">
+                        Começar Grátis
+                    </a>
+                </div>
+            </div>
+        </div>
     </nav>
 
-    <div class="hero">
-        <h1>💰 Controle suas Finanças</h1>
-        <p>Gerencie seu dinheiro de forma simples, rápida e eficiente</p>
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 px-4">
+        <div class="max-w-7xl mx-auto text-center">
+            <div class="mb-8">
+                <span class="bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold">
+                    🚀 100% Grátis para começar
+                </span>
+            </div>
+            
+            <h1 class="text-5xl md:text-7xl font-extrabold mb-6 leading-tight">
+                Controle Financeiro
+                <span class="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                    Inteligente
+                </span>
+            </h1>
+            
+            <p class="text-xl md:text-2xl text-gray-600 mb-12 max-w-3xl mx-auto">
+                Gerencie suas finanças de forma simples, rápida e visual. 
+                Tome decisões melhores sobre seu dinheiro.
+            </p>
 
-        <div class="hero-buttons">
-            <a href="{% url 'login' %}" class="btn btn-primary">
-                🚀 Começar Agora
+            <div class="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+                <a href="{% url 'registro' %}" 
+                   class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:shadow-2xl transition transform hover:-translate-y-1">
+                    🎉 Começar Gratuitamente
+                </a>
+                <a href="{% url 'pricing' %}" 
+                   class="bg-white text-gray-800 px-8 py-4 rounded-xl font-bold text-lg border-2 border-gray-200 hover:border-blue-600 hover:shadow-lg transition">
+                    💎 Ver Planos
+                </a>
+            </div>
+
+            <!-- Trust Badges -->
+            <div class="flex flex-wrap justify-center items-center gap-8 text-sm text-gray-500">
+                <div class="flex items-center gap-2">
+                    <svg class="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                    </svg>
+                    <span>Sem cartão necessário</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <svg class="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                    </svg>
+                    <span>Configuração em 2 minutos</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <svg class="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                    </svg>
+                    <span>Dados 100% seguros</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">Tudo que você precisa em um só lugar</h2>
+                <p class="text-xl text-gray-600">Ferramentas poderosas para controlar suas finanças</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="p-8 rounded-2xl bg-gradient-to-br from-blue-50 to-blue-100 hover:shadow-xl transition transform hover:-translate-y-2">
+                    <div class="text-5xl mb-4">📊</div>
+                    <h3 class="text-2xl font-bold mb-3 text-gray-900">Dashboard Visual</h3>
+                    <p class="text-gray-600">
+                        Veja todas suas finanças em gráficos interativos e indicadores em tempo real.
+                    </p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="p-8 rounded-2xl bg-gradient-to-br from-purple-50 to-purple-100 hover:shadow-xl transition transform hover:-translate-y-2">
+                    <div class="text-5xl mb-4">💳</div>
+                    <h3 class="text-2xl font-bold mb-3 text-gray-900">Múltiplas Contas</h3>
+                    <p class="text-gray-600">
+                        Gerencie contas correntes, poupanças, cartões e investimentos em um único local.
+                    </p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="p-8 rounded-2xl bg-gradient-to-br from-pink-50 to-pink-100 hover:shadow-xl transition transform hover:-translate-y-2">
+                    <div class="text-5xl mb-4">🎯</div>
+                    <h3 class="text-2xl font-bold mb-3 text-gray-900">Metas Inteligentes</h3>
+                    <p class="text-gray-600">
+                        Defina objetivos financeiros e acompanhe seu progresso automaticamente.
+                    </p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="p-8 rounded-2xl bg-gradient-to-br from-green-50 to-green-100 hover:shadow-xl transition transform hover:-translate-y-2">
+                    <div class="text-5xl mb-4">📈</div>
+                    <h3 class="text-2xl font-bold mb-3 text-gray-900">Relatórios Avançados</h3>
+                    <p class="text-gray-600">
+                        Análises detalhadas com gráficos de evolução, comparativos e projeções.
+                    </p>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="p-8 rounded-2xl bg-gradient-to-br from-yellow-50 to-yellow-100 hover:shadow-xl transition transform hover:-translate-y-2">
+                    <div class="text-5xl mb-4">💰</div>
+                    <h3 class="text-2xl font-bold mb-3 text-gray-900">Orçamentos Personalizados</h3>
+                    <p class="text-gray-600">
+                        Crie orçamentos por categoria e receba alertas quando atingir os limites.
+                    </p>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="p-8 rounded-2xl bg-gradient-to-br from-indigo-50 to-indigo-100 hover:shadow-xl transition transform hover:-translate-y-2">
+                    <div class="text-5xl mb-4">🔒</div>
+                    <h3 class="text-2xl font-bold mb-3 text-gray-900">Segurança Total</h3>
+                    <p class="text-gray-600">
+                        Seus dados criptografados e protegidos com as melhores práticas de segurança.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+        <div class="max-w-4xl mx-auto text-center px-4">
+            <h2 class="text-4xl md:text-5xl font-bold mb-6">
+                Pronto para controlar suas finanças?
+            </h2>
+            <p class="text-xl mb-8 opacity-90">
+                Comece gratuitamente agora mesmo. Sem cartão de crédito necessário.
+            </p>
+            <a href="{% url 'registro' %}" 
+               class="inline-block bg-white text-blue-600 px-10 py-4 rounded-xl font-bold text-lg hover:shadow-2xl transition transform hover:-translate-y-1">
+                🚀 Criar Conta Grátis
             </a>
-            <a href="{% url 'dashboard' %}" class="btn btn-secondary">
-                📊 Ver Demo
-            </a>
         </div>
-    </div>
+    </section>
 
-    <div class="features">
-        <div class="feature">
-            <div class="feature-icon">📊</div>
-            <h3>Dashboard Intuitivo</h3>
-            <p>Visualize todas as suas finanças em um só lugar com gráficos e resumos claros</p>
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-300 py-12">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid md:grid-cols-3 gap-8 text-center md:text-left">
+                <div>
+                    <div class="flex items-center justify-center md:justify-start space-x-2 mb-4">
+                        <span class="text-3xl">💰</span>
+                        <span class="text-xl font-bold text-white">Budget Avila</span>
+                    </div>
+                    <p class="text-sm">
+                        Controle financeiro inteligente para sua vida pessoal.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-white mb-4">Links</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="{% url 'pricing' %}" class="hover:text-white transition">Planos</a></li>
+                        <li><a href="{% url 'termos' %}" class="hover:text-white transition">Termos de Uso</a></li>
+                        <li><a href="{% url 'privacidade' %}" class="hover:text-white transition">Privacidade</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-white mb-4">Contato</h4>
+                    <p class="text-sm">dev@avila.inc</p>
+                    <p class="text-sm mt-2">© 2025 Budget Avila. Todos os direitos reservados.</p>
+                </div>
+            </div>
         </div>
+    </footer>
 
-        <div class="feature">
-            <div class="feature-icon">💳</div>
-            <h3>Múltiplas Contas</h3>
-            <p>Gerencie várias contas bancárias, carteiras e investimentos simultaneamente</p>
-        </div>
-
-        <div class="feature">
-            <div class="feature-icon">📝</div>
-            <h3>Controle de Transações</h3>
-            <p>Registre receitas e despesas de forma rápida com categorias personalizáveis</p>
-        </div>
-
-        <div class="feature">
-            <div class="feature-icon">🎯</div>
-            <h3>Orçamentos Inteligentes</h3>
-            <p>Defina limites por categoria e acompanhe seus gastos em tempo real</p>
-        </div>
-
-        <div class="feature">
-            <div class="feature-icon">🏆</div>
-            <h3>Metas Financeiras</h3>
-            <p>Estabeleça objetivos e acompanhe seu progresso rumo à realização</p>
-        </div>
-
-        <div class="feature">
-            <div class="feature-icon">🔒</div>
-            <h3>100% Seguro</h3>
-            <p>Seus dados são protegidos e armazenados com criptografia de ponta</p>
-        </div>
-    </div>
 </body>
 </html>
